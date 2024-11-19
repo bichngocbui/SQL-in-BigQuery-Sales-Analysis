@@ -41,4 +41,5 @@ The project leverages BigQuery's powerful features including:
 - Advanced SQL aggregations and window functions
 - Cohort analysis using date-based grouping
 - Comparative growth calculations (YoY, MoM)
+## Exploring the Dataset
 
