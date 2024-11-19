@@ -36,4 +36,9 @@ This analysis empowers AdventureWorld to:
 - Time Period: Full historical data, with focus on 2011-2014
 ### Data Schema
 For detailed information about the Google Analytics dataset schema, please refer to the official Google Analytics documentation, available at https://drive.google.com/file/d/1bwwsS3cRJYOg1cvNppc1K_8dQLELN16T/view ↩
+## Technical Implementation
+The project leverages BigQuery's powerful features including:
+- Advanced SQL aggregations and window functions
+- Cohort analysis using date-based grouping
+- Comparative growth calculations (YoY, MoM)
 
