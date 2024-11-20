@@ -110,7 +110,164 @@ order by dk ;
 ```
 #### Result 
 ![image](https://github.com/user-attachments/assets/0f018b06-39ca-4f6d-ad10-20ae2328a1d1)
-The table calculates the Year-over-Year (YoY) growth rate by subcategory, revealing the ___top 3 subcategories with the highest growth rates___. ___Mountain Frames___ leads with a growth rate of ___5.21%___, followed by ___Socks___ at ___4.21%___, and ___Road Frames___ at ___3.89%___. These subcategories show ___strong performance___, indicating successful strategies in boosting sales. Monitoring these categories can provide insights into ___effective approaches that could be applied to other subcategories to drive growth___.
+
+The table calculates the Year-over-Year (YoY) growth rate by subcategory, revealing the top 3 subcategories with the highest growth rates. ___Mountain Frames___ leads with a growth rate of ___5.21%___, followed by ___Socks at 4.21%___, and ___Road Frames at 3.89%___. These subcategories show ___strong performance___, indicating successful strategies in boosting sales. Monitoring these categories can provide insights into ___effective approaches that could be applied to other subcategories to drive growth___.
+### Query3: Ranking Top 3 TeritoryID with biggest Order quantity of every year 
+#### Syntax 
+```sql 
+with order_cnt_data as ( 
+      select 
+            extract (year from a.ModifiedDate) as yr,
+            TerritoryID, 
+            sum(a.OrderQty) as order_cnt,
+      from `adventureworks2019.Sales.SalesOrderDetail` a 
+      left join `adventureworks2019.Sales.SalesOrderHeader` b
+            on a.SalesOrderID = b.SalesOrderID
+      group by yr, TerritoryID
+)
+
+select * 
+from ( 
+      select 
+            yr,
+            TerritoryID,
+            order_cnt,
+            dense_rank () over (partition by yr order by order_cnt desc) as rk
+      from order_cnt_data
+      ) 
+where rk < 4 
+order by yr desc; 
+```
+#### Result
+![image](https://github.com/user-attachments/assets/684ddbe1-3cbf-4fd5-9d37-c9e7bc4444fb)
+
+The table ranks the top 3 Territory IDs with the biggest order quantities for each year. ___TerritoryID 4 consistently ranks first, showing its dominant position across all years___.
+### Query4: Calc Total Discount Cost belongs to Seasonal Discount for each SubCategory
+#### Syntax
+```sql
+select 
+    FORMAT_TIMESTAMP("%Y", ModifiedDate) as year
+    , Name
+    , sum(disc_cost) as total_cost
+from (
+      select distinct a.*
+      , c.Name
+      , d.DiscountPct, d.Type
+      , a.OrderQty * d.DiscountPct * UnitPrice as disc_cost 
+      from `adventureworks2019.Sales.SalesOrderDetail` a
+      LEFT JOIN `adventureworks2019.Production.Product` b on a.ProductID = b.ProductID
+      LEFT JOIN `adventureworks2019.Production.ProductSubcategory` c on cast(b.ProductSubcategoryID as int) = c.ProductSubcategoryID
+      LEFT JOIN `adventureworks2019.Sales.SpecialOffer` d on a.SpecialOfferID = d.SpecialOfferID
+      WHERE lower(d.Type) like '%seasonal discount%' 
+)
+group by 1,2;
+```
+#### Result 
+![image](https://github.com/user-attachments/assets/e02ec6eb-6bc1-461c-8890-a12b327fdd90)
+
+The query calculates the total discount cost related to the Seasonal Discount for each SubCategory, and in this case, ___"Helmets" is the only product that receives the discount___. For 2012, the total discount cost for Helmets is 827.65, while ___for 2013, the cost increases___ to 1606.04. This shows a ___significant increase___ in the total seasonal discount cost for Helmets from 2012 to 2013, highlighting the growing investment in discounts for this particular product.
+### Query 5: Retention rate of Customer in 2014 with status of Successfully Shipped (Cohort Analysis)
+#### Syntax
+```sql 
+with 
+info as (
+  select  
+      extract(month from ModifiedDate) as month_no
+      , extract(year from ModifiedDate) as year_no
+      , CustomerID
+      , count(Distinct SalesOrderID) as order_cnt
+  from `adventureworks2019.Sales.SalesOrderHeader`
+  where FORMAT_TIMESTAMP("%Y", ModifiedDate) = '2014'
+  and Status = 5
+  group by 1,2,3
+  order by 3,1 
+),
+
+row_num as (--đánh số thứ tự các tháng họ mua hàng
+  select *
+      , row_number() over (partition by CustomerID order by month_no) as row_numb
+  from info 
+), 
+
+first_order as (   --lấy ra tháng đầu tiên của từng khách
+  select *
+  from row_num
+  where row_numb = 1
+), 
+
+month_gap as (
+  select 
+      a.CustomerID
+      , b.month_no as month_join
+      , a.month_no as month_order
+      , a.order_cnt
+      , concat('M - ',a.month_no - b.month_no) as month_diff
+  from info a 
+  left join first_order b 
+  on a.CustomerID = b.CustomerID
+  order by 1,3
+)
+
+select month_join
+      , month_diff 
+      , count(distinct CustomerID) as customer_cnt
+from month_gap
+group by 1,2
+order by 1,2;
+```
+#### Result 
+![image](https://github.com/user-attachments/assets/d1c7b413-4015-4d49-b982-4e44cd3c2131)
+The table shows a ___significant decline in customer counts as the months since joining increase___. Month M-0 has the highest number of customers, while Month M-1 and beyond see sharp drops, with Month M-6 having the lowest count. This suggests ___a need for retention strategies___ to keep customers engaged beyond their first few months.
+### Query 6: Trend of Stock level & MoM diff % by all product in 2011
+#### Syntax 
+```sql 
+with stock_current_data as (
+      select
+            a.Name as name, 
+            extract (month from b.ModifiedDate) as month,
+            extract (year from b.ModifiedDate) as year,
+            sum(StockedQty) as stock_current
+      from `adventureworks2019.Production.Product` a 
+      left join `adventureworks2019.Production.WorkOrder` b
+           on a.ProductID = b.ProductID
+      where extract (year from b.ModifiedDate) = 2011 
+      group by name, month, year 
+), 
+
+stock_prev_data as ( 
+      select
+            name,
+            month,
+            year,
+            stock_current,
+            lag (stock_current, 1) over (partition by name order by month) as stock_prev 
+      from stock_current_data
+)
+
+select 
+      name,
+      month,
+      year,
+      stock_current,
+      stock_prev,
+      round ((stock_current - stock_prev) / stock_prev * 100, 1) as diff
+from stock_prev_data
+order by name, month desc; 
+```
+#### Result 
+![image](https://github.com/user-attachments/assets/5aded4ef-8619-4686-a65c-694219470fbc)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
