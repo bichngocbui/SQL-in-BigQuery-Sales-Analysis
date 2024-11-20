@@ -65,5 +65,5 @@ group by period, name
 order by name;
 ```
 #### Result
-![image](https://github.com/user-attachments/assets/5c290271-4f5c-471c-9db3-2c14c9686ea9)
-
+![image](https://github.com/user-attachments/assets/b9e70755-4641-46fb-9a5a-1c648804351c)
+The sales data reveals distinct patterns across product categories, with ___bikes (Mountain, Road, and Touring) driving the highest revenue___ despite lower order counts due to their premium pricing. Accessories like ___Tires and Tubes, Bottles and Cages, and Helmets demonstrate the highest order frequency___, indicating strong recurring purchase behavior. There's a clear seasonal trend with ___peak sales occurring in March 2014___ across multiple categories, while ___November-December 2013 shows a noticeable dip___. ___Small accessories___ consistently generate ___high order volumes but lower total sales values___, while ___bikes___ show the opposite pattern with ___fewer orders but higher revenue impact___. Most categories exhibit ___stronger performance during warmer months (March-July)___, with core products maintaining steady sales throughout the year and seasonal items showing more pronounced fluctuations in demand.
