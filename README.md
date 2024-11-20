@@ -2,33 +2,31 @@
 ## Introduction
 This project aims to conduct an in-depth analysis of sales performance for AdventureWorld, leveraging comprehensive SQL analytics on BigQuery to extract critical business insights across multiple dimensions.
 ## Key Analysis Areas
-### Product Subcategory Performance
-- Quantity of items sold
-- Sales value
-- Order quantity
-- Year-over-Year growth rates
-- Seasonal discount analysis
-### Territorial Sales Dynamics
-- Top 3 territories by order quantity
-- Annual territory performance ranking
-### Inventory and Sales Relationship
-- Stock level trends
-- Stock-to-Sales ratio
-- Month-over-Month variation analysis
+The analysis is divided into the following focus areas:
+### Sales and Growth Analysis
+- Calculate the total quantity of items, sales value, and order quantity by subcategory for the last 12 months (L12M).
+- Determine the YoY growth rate (%) by subcategory and identify the top three categories with the highest growth rates based on quantity sold.
+### Territory Performance
+- Rank the top three TerritoryIDs by yearly order quantity, ensuring no ranking is skipped for ties.
+### Discount Costs
+- Calculate the total discount cost for seasonal discounts by subcategory.
 ### Customer Retention
-- Successfully shipped order retention rate
-- Customer cohort analysis for 2014
-### Financial Metrics
-- Pending order analysis
-- Employee compensation insights
+Perform a cohort analysis to calculate the retention rate of customers in 2014 who achieved the "Successfully Shipped" status.
+### Stock Trends
+- Analyze stock levels in 2011, identifying month-over-month (MoM) differences (%) for all products. If the growth rate is null, default to 0.
+- Calculate the stock-to-sales ratio by product and month in 2011, ordering results by descending month and ratio.
+### Order Metrics
+- Summarize the number of orders and total value for orders in "Pending" status during 2014.
+### Employee Performance
+- Identify the top employee with the highest monthly pay over the last six months.
 ## Business Value
 This analysis empowers AdventureWorld to:
-- Optimize product portfolio strategy
-- Identify high-growth subcategories
-- Understand geographical sales performance
-- Improve inventory management
-- Enhance customer retention strategies
-- Support strategic decision-making through data-driven insights
+- Monitor sales performance and identify high-growth subcategories to drive revenue.
+- Recognize top-performing territories for strategic focus.
+- Optimize discount strategies by evaluating seasonal discount costs.
+- Retain customers through actionable insights into shipping success and retention metrics.
+- Manage inventory effectively using stock-level trends and stock-to-sales ratios.
+- Improve operational efficiency by understanding pending orders and employee performance.
 ## Data Access & Structure
 ### Dataset Information
 - Platform: Google BigQuery
@@ -42,4 +40,30 @@ The project leverages BigQuery's powerful features including:
 - Cohort analysis using date-based grouping
 - Comparative growth calculations (YoY, MoM)
 ## Exploring the Dataset
+### Query 1: Calc Quantity of items, Sales value & Order quantity by each Subcategory in L12M
+#### Syntax 
+```sql
+with latest_date as (
+      select 
+            max (ModifiedDate) as latest_date 
+      from `adventureworks2019.Sales.SalesOrderDetail` 
+)
+
+select 
+      format_date ('%b %Y', a.ModifiedDate) as period,
+      c.name as name,
+      sum (a.OrderQty) as qty_item,
+      sum (a.LineTotal) as total_sales,
+      count (distinct a.SalesOrderID) as order_cnt 
+from `adventureworks2019.Sales.SalesOrderDetail` a 
+left join `adventureworks2019.Production.Product` b 
+      on a.ProductID = b.ProductID
+left join `adventureworks2019.Production.ProductSubcategory` c
+      on cast (b.ProductSubcategoryID as int) = c.ProductSubcategoryID
+where date(a.ModifiedDate) between (date_sub('2014-06-30', interval 12 month)) and '2014-06-30'
+group by period, name 
+order by name;
+```
+#### Result
+![image](https://github.com/user-attachments/assets/5c290271-4f5c-471c-9db3-2c14c9686ea9)
 
