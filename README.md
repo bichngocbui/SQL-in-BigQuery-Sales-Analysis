@@ -24,7 +24,7 @@ This analysis empowers AdventureWorld to:
 - Optimize discount strategies by evaluating seasonal discount costs.
 - Retain customers through actionable insights into shipping success and retention metrics.
 - Manage inventory effectively using stock-level trends and stock-to-sales ratios.
-- Improve operational efficiency by understanding pending orders and employee performance.
+- Improve operational efficiency by understanding pending orders.
 ## Data Access & Structure
 ### Dataset Information
 - Platform: Google BigQuery
@@ -319,6 +319,13 @@ group by yr, Status;
 ![image](https://github.com/user-attachments/assets/71a8cae0-39ea-4e90-81fa-e650b8dd72e6)
 
 In 2014, there were 224 orders with a total value of 3,873,579.01 at the Pending status. These orders could indicate issues such as ___delays in processing___, ____inventory shortages___, or ___payment problems___. To improve operational efficiency, it's recommended to investigate the underlying causes of these pending orders, implement automation or process improvements to reduce delays, and prioritize customer communication to manage expectations and improve satisfaction.
+## Conclusion 
+This project analyzes sales data for AdventureWorld using BigQuery to provide key insights that optimize business strategies. The analysis covers sales and growth by product category, performance by region, discount cost efficiency, customer retention, inventory trends, and order metrics. The project helps identify high-growth areas, optimize discount strategies, retain long-term customers, and improve inventory and operations management.
+
+
+
+
+
 
 
 
