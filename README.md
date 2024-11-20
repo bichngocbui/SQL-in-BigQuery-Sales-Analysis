@@ -109,7 +109,7 @@ order by dk ;
 #### Result 
 ![image](https://github.com/user-attachments/assets/0f018b06-39ca-4f6d-ad10-20ae2328a1d1)
 
-The table calculates the Year-over-Year (YoY) growth rate by subcategory, revealing the top 3 subcategories with the highest growth rates. ___Mountain Frames___ leads with a growth rate of ___5.21%___, followed by ___Socks at 4.21%___, and ___Road Frames at 3.89%___. These subcategories show ___strong performance___, indicating successful strategies in boosting sales. Monitoring these categories can provide insights into ___effective approaches that could be applied to other subcategories to drive growth___.
+The table calculates the Year-over-Year (YoY) growth rate by subcategory, revealing the top 3 subcategories with the highest growth rates. Mountain Frames leads with a growth rate of 5.21%, followed by Socks at 4.21%, and Road Frames at 3.89%. These subcategories show ___strong performance___, indicating successful strategies in boosting sales. Monitoring these categories can provide insights into ___effective approaches that could be applied to other subcategories to drive growth___.
 ### Query3: Ranking Top 3 TeritoryID with biggest Order quantity of every year 
 #### Syntax 
 ```sql 
@@ -163,7 +163,7 @@ group by 1,2;
 #### Result 
 ![image](https://github.com/user-attachments/assets/e02ec6eb-6bc1-461c-8890-a12b327fdd90)
 
-The query calculates the total discount cost related to the Seasonal Discount for each SubCategory, and in this case, ___"Helmets" is the only product that receives the discount___. For 2012, the total discount cost for Helmets is 827.65, while ___for 2013, the cost increases___ to 1606.04. This shows a ___significant increase___ in the total seasonal discount cost for Helmets from 2012 to 2013, highlighting the growing investment in discounts for this particular product.
+The query calculates the total discount cost related to the Seasonal Discount for each SubCategory, and in this case, ___"Helmets" is the only product that receives the discount___. For 2012, the total discount cost for Helmets is 827.65, while for 2013, the cost increases to 1606.04. This shows a ___significant increase in the total seasonal discount cost for Helmets from 2012 to 2013____, highlighting the growing investment in discounts for this particular product.
 ### Query 5: Retention rate of Customer in 2014 with status of Successfully Shipped (Cohort Analysis)
 #### Syntax
 ```sql 
