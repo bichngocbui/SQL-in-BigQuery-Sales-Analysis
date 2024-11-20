@@ -217,6 +217,7 @@ order by 1,2;
 ```
 #### Result 
 ![image](https://github.com/user-attachments/assets/d1c7b413-4015-4d49-b982-4e44cd3c2131)
+
 The table shows a ___significant decline in customer counts as the months since joining increase___. Month M-0 has the highest number of customers, while Month M-1 and beyond see sharp drops, with Month M-6 having the lowest count. This suggests ___a need for retention strategies___ to keep customers engaged beyond their first few months.
 ### Query 6: Trend of Stock level & MoM diff % by all product in 2011
 #### Syntax 
@@ -256,6 +257,13 @@ order by name, month desc;
 ```
 #### Result 
 ![image](https://github.com/user-attachments/assets/5aded4ef-8619-4686-a65c-694219470fbc)
+The data reveals ___fluctuating stock levels___ and ___significant month-over-month changes in 2011___, with ___most products bearings showing sharp declines in stock towards the end of the year___. ___Seasonal demand___ appears to influence these variations, as many items experienced large swings in stock, indicating unpredictable demand. To improve, it's recommended to ___enhance demand forecasting models___ to align stock levels with actual trends, ___focus on better inventory management___ for seasonal fluctuations, and ___prioritize replenishing___ high-demand items before peak periods to avoid shortages.
+
+
+
+
+
+
 
 
 
