@@ -110,4 +110,11 @@ order by dk ;
 ```
 #### Result 
 ![image](https://github.com/user-attachments/assets/0f018b06-39ca-4f6d-ad10-20ae2328a1d1)
+The table calculates the Year-over-Year (YoY) growth rate by subcategory, revealing the ___top 3 subcategories with the highest growth rates___. ___Mountain Frames___ leads with a growth rate of ___5.21%___, followed by ___Socks___ at ___4.21%___, and ___Road Frames___ at ___3.89%___. These subcategories show ___strong performance___, indicating successful strategies in boosting sales. Monitoring these categories can provide insights into ___effective approaches that could be applied to other subcategories to drive growth___.
 
+
+
+
+
+
+`
