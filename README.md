@@ -259,7 +259,7 @@ order by name, month desc;
 ![image](https://github.com/user-attachments/assets/5aded4ef-8619-4686-a65c-694219470fbc)
 
 The data reveals ___fluctuating stock levels___ and ___significant month-over-month changes in 2011___, with ___most products bearings showing sharp declines in stock towards the end of the year___. ___Seasonal demand___ appears to influence these variations, as many items experienced large swings in stock, indicating unpredictable demand. To improve, it's recommended to ___enhance demand forecasting models___ to align stock levels with actual trends, ___focus on better inventory management___ for seasonal fluctuations, and ___prioritize replenishing___ high-demand items before peak periods to avoid shortages.
-### Query7: Calc Ratio of Stock / Sales in 2011 by product name, by month
+### Query 7: Calc Ratio of Stock / Sales in 2011 by product name, by month
 #### Syntax
 ``` sql 
 with 
@@ -300,6 +300,15 @@ and a.yr = b.yr
 order by 1 desc, 7 desc;
 ```
 #### Result
+
+![image](https://github.com/user-attachments/assets/9a314043-f3e1-4077-9e0d-e2fd13fb9ada)
+___The data shows varying stock-to-sales ratios in 2011___. In December, products like HL Mountain Frame - Black, 48 had high ratios (27), indicating overstocking, while items such as Road-150 Red, 52 had balanced ratios (~1). October saw a mix, with some products overstocked (e.g., HL Mountain Frame - Black, 48, ratio 2.91) and others understocked (e.g., Road-150 Red, 52, ratio < 1). ___Improved demand forecasting is needed to optimize inventory levels.___
+
+
+
+
+
+
 
 
 
