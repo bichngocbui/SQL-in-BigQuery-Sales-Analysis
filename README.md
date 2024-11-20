@@ -68,3 +68,44 @@ order by name;
 ![image](https://github.com/user-attachments/assets/b9e70755-4641-46fb-9a5a-1c648804351c)
 
 The sales data reveals distinct patterns across product categories, with ___bikes (Mountain, Road, and Touring) driving the highest revenue___ despite lower order counts due to their premium pricing. Accessories like ___Tires and Tubes, Bottles and Cages, and Helmets demonstrate the highest order frequency___, indicating strong recurring purchase behavior. There's a clear seasonal trend with ___peak sales occurring in March 2014___ across multiple categories, while ___November-December 2013 shows a noticeable dip___. ___Small accessories___ consistently generate ___high order volumes but lower total sales values___, while ___bikes___ show the opposite pattern with ___fewer orders but higher revenue impact___. Most categories exhibit ___stronger performance during warmer months (March-July)___, with core products maintaining steady sales throughout the year and seasonal items showing more pronounced fluctuations in demand.
+### Query 2: Calc % YoY growth rate by SubCategory & release top 3 cat with highest grow rate
+#### Syntax
+``` sql 
+with 
+sale_info as (
+  SELECT 
+      FORMAT_TIMESTAMP("%Y", a.ModifiedDate) as yr
+      , c.Name
+      , sum(a.OrderQty) as qty_item
+
+  FROM `adventureworks2019.Sales.SalesOrderDetail` a 
+  LEFT JOIN `adventureworks2019.Production.Product` b on a.ProductID = b.ProductID
+  LEFT JOIN `adventureworks2019.Production.ProductSubcategory` c on cast(b.ProductSubcategoryID as int) = c.ProductSubcategoryID
+
+  GROUP BY 1,2
+  ORDER BY 2 asc , 1 desc
+),
+
+sale_diff as (
+  select *
+  , lead (qty_item) over (partition by Name order by yr desc) as prv_qty
+  , round(qty_item / (lead (qty_item) over (partition by Name order by yr desc)) -1,2) as qty_diff
+  from sale_info
+  order by 5 desc 
+),
+
+rk_qty_diff as (
+  select *
+      ,dense_rank() over( order by qty_diff desc) dk
+  from sale_diff
+)
+
+select distinct Name
+      , qty_item
+      , prv_qty
+      , qty_diff
+from rk_qty_diff 
+where dk <=3
+order by dk ;
+```
+#### Result 
