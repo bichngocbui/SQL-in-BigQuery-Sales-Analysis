@@ -11,14 +11,12 @@ The analysis is divided into the following focus areas:
 ### Discount Costs
 - Calculate the total discount cost for seasonal discounts by subcategory.
 ### Customer Retention
-Perform a cohort analysis to calculate the retention rate of customers in 2014 who achieved the "Successfully Shipped" status.
+- Perform a cohort analysis to calculate the retention rate of customers in 2014 who achieved the "Successfully Shipped" status.
 ### Stock Trends
 - Analyze stock levels in 2011, identifying month-over-month (MoM) differences (%) for all products. If the growth rate is null, default to 0.
 - Calculate the stock-to-sales ratio by product and month in 2011, ordering results by descending month and ratio.
 ### Order Metrics
 - Summarize the number of orders and total value for orders in "Pending" status during 2014.
-### Employee Performance
-- Identify the top employee with the highest monthly pay over the last six months.
 ## Business Value
 This analysis empowers AdventureWorld to:
 - Monitor sales performance and identify high-growth subcategories to drive revenue.
