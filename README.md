@@ -67,7 +67,7 @@ order by name;
 #### Result
 ![image](https://github.com/user-attachments/assets/b9e70755-4641-46fb-9a5a-1c648804351c)
 
-The sales data reveals distinct patterns across product categories, with ___bikes (Mountain, Road, and Touring) driving the highest revenue___ despite lower order counts due to their premium pricing. Accessories like ___Tires and Tubes, Bottles and Cages, and Helmets demonstrate the highest order frequency___, indicating strong recurring purchase behavior. There's a clear seasonal trend with ___peak sales occurring in March 2014___ across multiple categories, while ___November-December 2013 shows a noticeable dip___. ___Small accessories___ consistently generate ___high order volumes but lower total sales values___, while ___bikes___ show the opposite pattern with ___fewer orders but higher revenue impact___. Most categories exhibit ___stronger performance during warmer months (March-July)___, with core products maintaining steady sales throughout the year and seasonal items showing more pronounced fluctuations in demand.
+Based on the analysis of Quantity, Sales Value, and Order Quantity by Subcategory in L12M, it suggests that ___subcategories with high quantity but low sales value___ may indicate low-priced, high-volume products. Conversely, those with ___high sales value but low orders___ could point to premium products with lower frequency. Recommendations include ___focusing on high-margin subcategories for targeted promotions___, and exploring ___bundling for lower-priced items to improve profitability___.
 ### Query 2: Calc % YoY growth rate by SubCategory & release top 3 cat with highest grow rate
 #### Syntax
 ``` sql 
@@ -302,7 +302,31 @@ order by 1 desc, 7 desc;
 #### Result
 
 ![image](https://github.com/user-attachments/assets/9a314043-f3e1-4077-9e0d-e2fd13fb9ada)
+
 ___The data shows varying stock-to-sales ratios in 2011___. In December, products like HL Mountain Frame - Black, 48 had high ratios (27), indicating overstocking, while items such as Road-150 Red, 52 had balanced ratios (~1). October saw a mix, with some products overstocked (e.g., HL Mountain Frame - Black, 48, ratio 2.91) and others understocked (e.g., Road-150 Red, 52, ratio < 1). ___Improved demand forecasting is needed to optimize inventory levels.___
+### Query 8: No of order and value at Pending status in 2014
+#### Syntax
+```sql 
+select 
+      extract (year from ModifiedDate) as yr, 
+      Status,
+      count(distinct PurchaseOrderID) as order_Cnt, 
+      sum(TotalDue) as value
+from `adventureworks2019.Purchasing.PurchaseOrderHeader` 
+where status = 1 
+      and extract (year from ModifiedDate) = 2014 
+group by yr, Status; 
+```
+#### Result
+![image](https://github.com/user-attachments/assets/71a8cae0-39ea-4e90-81fa-e650b8dd72e6)
+
+In 2014, there were 224 orders with a total value of 3,873,579.01 at the Pending status. These orders could indicate issues such as ___delays in processing___, ____inventory shortages___, or ___payment problems___. To improve operational efficiency, it's recommended to investigate the underlying causes of these pending orders, implement automation or process improvements to reduce delays, and prioritize customer communication to manage expectations and improve satisfaction.
+
+
+
+
+
+
 
 
 
