@@ -109,3 +109,4 @@ where dk <=3
 order by dk ;
 ```
 #### Result 
+![image](https://github.com/user-attachments/assets/0f018b06-39ca-4f6d-ad10-20ae2328a1d1)
