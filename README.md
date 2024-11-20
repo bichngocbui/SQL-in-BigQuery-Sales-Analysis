@@ -257,8 +257,49 @@ order by name, month desc;
 ```
 #### Result 
 ![image](https://github.com/user-attachments/assets/5aded4ef-8619-4686-a65c-694219470fbc)
-The data reveals ___fluctuating stock levels___ and ___significant month-over-month changes in 2011___, with ___most products bearings showing sharp declines in stock towards the end of the year___. ___Seasonal demand___ appears to influence these variations, as many items experienced large swings in stock, indicating unpredictable demand. To improve, it's recommended to ___enhance demand forecasting models___ to align stock levels with actual trends, ___focus on better inventory management___ for seasonal fluctuations, and ___prioritize replenishing___ high-demand items before peak periods to avoid shortages.
 
+The data reveals ___fluctuating stock levels___ and ___significant month-over-month changes in 2011___, with ___most products bearings showing sharp declines in stock towards the end of the year___. ___Seasonal demand___ appears to influence these variations, as many items experienced large swings in stock, indicating unpredictable demand. To improve, it's recommended to ___enhance demand forecasting models___ to align stock levels with actual trends, ___focus on better inventory management___ for seasonal fluctuations, and ___prioritize replenishing___ high-demand items before peak periods to avoid shortages.
+### Query7: Calc Ratio of Stock / Sales in 2011 by product name, by month
+#### Syntax
+``` sql 
+with 
+sale_info as (
+  select 
+      extract(month from a.ModifiedDate) as mth 
+     , extract(year from a.ModifiedDate) as yr 
+     , a.ProductId
+     , b.Name
+     , sum(a.OrderQty) as sales
+  from `adventureworks2019.Sales.SalesOrderDetail` a 
+  left join `adventureworks2019.Production.Product` b 
+    on a.ProductID = b.ProductID
+  where FORMAT_TIMESTAMP("%Y", a.ModifiedDate) = '2011'
+  group by 1,2,3,4
+), 
+
+stock_info as (
+  select
+      extract(month from ModifiedDate) as mth 
+      , extract(year from ModifiedDate) as yr 
+      , ProductId
+      , sum(StockedQty) as stock_cnt
+  from 'adventureworks2019.Production.WorkOrder'
+  where FORMAT_TIMESTAMP("%Y", ModifiedDate) = '2011'
+  group by 1,2,3
+)
+
+select
+      a.*
+    , b.stock_cnt as stock  --(*)
+    , round(coalesce(b.stock_cnt,0) / sales,2) as ratio
+from sale_info a 
+full join stock_info b 
+  on a.ProductId = b.ProductId
+and a.mth = b.mth 
+and a.yr = b.yr
+order by 1 desc, 7 desc;
+```
+#### Result
 
 
 
